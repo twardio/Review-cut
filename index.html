@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://player.vimeo.com/api/player.js; script-src-attr 'none'; style-src 'self'; img-src 'self'; frame-src https://player.vimeo.com/video/; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Paste a Vimeo link, add timestamped feedback and export CSV.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>ReviewCut Lite</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./core.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>ReviewCut Lite</h1>
+      <p>Paste a Vimeo link, add timestamped feedback, then export your CSV.</p>
+    </header>
+    <p id="storage-warning" class="warning" role="status" hidden></p>
+    <section aria-labelledby="link-heading">
+      <h2 id="link-heading"><span>1</span> Load your video</h2>
+      <form id="link-form">
+        <label class="sr-only" for="video-url">Vimeo link</label>
+        <div class="link-row">
+          <input id="video-url" name="url" type="url" required placeholder="https://vimeo.com/123456789" autocomplete="off" spellcheck="false">
+          <button type="submit">Load video</button>
+          <button type="button" id="start-new" class="secondary" hidden>Start new video</button>
+        </div>
+        <p id="link-error" class="error" role="alert" hidden></p>
+      </form>
+    </section>
+    <div id="workspace" hidden>
+      <div class="columns">
+        <section class="video-column" aria-label="Vimeo video">
+          <div id="video" class="video"></div>
+          <p id="player-message" class="hint" role="status"></p>
+        </section>
+        <div class="feedback-column">
+          <section aria-labelledby="feedback-heading">
+            <h2 id="feedback-heading"><span>2</span> Add feedback</h2>
+            <p class="hint" id="feedback-hint">Pause at the moment you want to comment on.</p>
+            <form id="feedback-form">
+              <label for="timestamp">Timestamp</label>
+              <input id="timestamp" name="time" type="text" required value="00:00" inputmode="decimal" autocomplete="off" aria-describedby="time-hint">
+              <p class="hint" id="time-hint">Captured automatically. You can also type mm:ss.</p>
+              <label for="feedback">Feedback</label>
+              <textarea id="feedback" name="feedback" required maxlength="10000" rows="4" placeholder="What needs changing?"></textarea>
+              <p id="feedback-error" class="error" role="alert" hidden></p>
+              <div class="form-actions"><button type="submit" id="add-feedback">Add feedback</button><button type="button" id="cancel-edit" class="secondary" hidden>Cancel edit</button></div>
+            </form>
+          </section>
+          <section class="notes-section" aria-labelledby="notes-heading">
+            <h3 id="notes-heading">Your comments</h3>
+            <p id="empty-notes" class="hint">Your comments will appear here.</p>
+            <ol id="notes" class="notes"></ol>
+          </section>
+        </div>
+        <section class="export-panel" aria-labelledby="export-heading">
+          <h2 id="export-heading"><span>3</span> Send your feedback</h2>
+          <p>Download your comments as a CSV, then send the file back to whoever shared the video.</p>
+          <button type="button" id="export-csv" disabled>Download CSV</button>
+          <p id="export-count" class="hint">Add your first comment to enable the download.</p>
+          <p id="export-message" class="hint" role="status"></p>
+        </section>
+      </div>
+      <p id="save-info" class="saving-note">Your video, notes and unfinished feedback are saved in this browser. Send the CSV to the video editor when you’re done.</p>
+    </div>
+    <noscript><p>Please enable JavaScript to use ReviewCut Lite.</p></noscript>
+  </main>
+</body>
+</html>
